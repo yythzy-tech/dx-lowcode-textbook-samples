@@ -8,11 +8,11 @@
   const ymd = (d) => `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}`;
 
   // 同じ受注番号のレコードが、すでにあるか（自分自身は除く）
-  async function existsOrderNo(orderNo, ownId) {
+  async function existsOrderNo(appId, orderNo, ownId) {
     let query = `order_no = "${orderNo}"`;
     if (ownId) query += ` and $id != ${ownId}`;
     const resp = await kintone.api(kintone.api.url('/k/v1/records', true), 'GET', {
-      app: kintone.app.getId(),
+      app: appId,
       query: `${query} limit 1`,
       fields: ['$id']
     });
@@ -20,10 +20,10 @@
   }
 
   // 🟥 当日の受注番号のうち、最大の連番を取得して、+1 した番号を返す
-  async function nextOrderNo(date) {
+  async function nextOrderNo(appId, date) {
     const head = `${PREFIX}${ymd(date)}-`;
     const resp = await kintone.api(kintone.api.url('/k/v1/records', true), 'GET', {
-      app: kintone.app.getId(),
+      app: appId,
       query: `order_no like "${head}" order by order_no desc limit 1`,
       fields: ['order_no']
     });
@@ -43,11 +43,13 @@
 
     // 🟩 受注以外は、確認しない（無駄な通信を減らす）
     if (record['status'].value !== '受注') return event;
+    // 🟦 アプリのID（PCとモバイルで、使うAPIが違う）
+    const appId = event.type.startsWith('mobile.') ? kintone.mobile.app.getId() : kintone.app.getId();
 
     try {
       if (!record['order_no'].value) {
-        record['order_no'].value = await nextOrderNo(new Date());
-      } else if (await existsOrderNo(record['order_no'].value, event.recordId)) {
+        record['order_no'].value = await nextOrderNo(appId, new Date());
+      } else if (await existsOrderNo(appId, record['order_no'].value, event.recordId)) {
         event.error = '受注番号が重複しています。';
         record['order_no'].error = '同じ受注番号が、すでに使われています。';
       }
