@@ -26,7 +26,9 @@
 
 - イベント名：`app.record.…` → `mobile.app.record.…`
 - API：`kintone.app.…` → `kintone.mobile.app.…`
-- 両対応：イベント名を両方に登録し、APIは `kintone.isMobilePage()` で切り替える
+- 両対応：イベント名を両方に登録し、APIは、イベント名（`event.type`）が `mobile.` で始まるかで切り替える（書籍の6.7節と同じ方法）
+
+> `kintone.isMobilePage()` は、Promiseを返す非同期のAPIです。`kintone.isMobilePage() ? … : …` のように同期で使うと、常に「モバイル」と判定されます。このリポジトリでは、同期で判定できる `event.type` を使っています。
 
 `book-code/` のコードは、書籍に掲載したとおり、PC向けです。
 

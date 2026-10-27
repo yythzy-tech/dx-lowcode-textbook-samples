@@ -3,8 +3,8 @@
 (() => {
   'use strict';
 
-  // PC／モバイルで、APIの入り口を切り替える
-  const kApp = () => (kintone.isMobilePage() ? kintone.mobile.app : kintone.app);
+  // PC／モバイルで、APIの入り口を切り替える（イベント名が mobile. で始まるかで判定する）
+  const kApp = (event) => (event.type.startsWith('mobile.') ? kintone.mobile.app : kintone.app);
 
   // 🟥 住所が未入力なら、保存前にエラーを表示して保存を止める
   kintone.events.on([
@@ -38,7 +38,7 @@
     'app.record.detail.show',
     'mobile.app.record.detail.show'
   ], (event) => {
-    const el = kApp().record.getSpaceElement('qr_space');
+    const el = kApp(event).record.getSpaceElement('qr_space');
     if (!el) return event;
 
     const address = event.record['address'].value;

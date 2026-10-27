@@ -2,9 +2,9 @@
 // PC用とスマートフォン用の、両方の欄に同じファイルを追加してください。
 (() => {
   'use strict';
-  // 画面（PC／モバイル）に応じて、使うAPIを切り替える
-  const setFieldShown = (code, isShown) => {
-    const api = kintone.isMobilePage() ? kintone.mobile.app.record : kintone.app.record;
+  // 画面（PC／モバイル）に応じて、使うAPIを切り替える（イベント名が mobile. で始まるかで判定する）
+  const setFieldShown = (event, code, isShown) => {
+    const api = event.type.startsWith('mobile.') ? kintone.mobile.app.record : kintone.app.record;
     api.setFieldShown(code, isShown);
   };
 
@@ -24,7 +24,7 @@
       event.record['order_uuid'].value = '';
     }
     // 🟩 UUIDは、人が読むものではないので、見えなくする
-    setFieldShown('order_uuid', false);
+    setFieldShown(event, 'order_uuid', false);
     return event;
   });
 
@@ -33,7 +33,7 @@
     'app.record.detail.show',
     'mobile.app.record.detail.show'
   ], (event) => {
-    setFieldShown('order_uuid', false);
+    setFieldShown(event, 'order_uuid', false);
     return event;
   });
 

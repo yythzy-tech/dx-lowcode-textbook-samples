@@ -3,8 +3,8 @@
 (() => {
   'use strict';
 
-  // PC／モバイルで、APIの入り口を切り替える
-  const kApp = () => (kintone.isMobilePage() ? kintone.mobile.app : kintone.app);
+  // PC／モバイルで、APIの入り口を切り替える（イベント名が mobile. で始まるかで判定する）
+  const kApp = (event) => (event.type.startsWith('mobile.') ? kintone.mobile.app : kintone.app);
 
   // 🟥 祝日データは、一度取得したら変数に保持して使い回す
   let holidaysCache = null;
@@ -63,10 +63,10 @@
         }
       }
 
-      const record = kApp().record.get();
+      const record = kApp(event).record.get();
       record.record['next_check'].value =
         nextDate.toISOString().split('T')[0];
-      kApp().record.set(record);
+      kApp(event).record.set(record);
     } catch (e) {
       console.error('祝日データの取得に失敗しました', e);
     }

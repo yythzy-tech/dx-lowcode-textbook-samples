@@ -3,8 +3,8 @@
 (() => {
   'use strict';
 
-  // PC／モバイルで、APIの入り口を切り替える
-  const kApp = () => (kintone.isMobilePage() ? kintone.mobile.app : kintone.app);
+  // PC／モバイルで、APIの入り口を切り替える（イベント名が mobile. で始まるかで判定する）
+  const kApp = (event) => (event.type.startsWith('mobile.') ? kintone.mobile.app : kintone.app);
  
   kintone.events.on([
     'app.record.create.show',
@@ -31,7 +31,7 @@
      * record['customer_name'].disabled = (status !== '作成中');
      */
  
-    kApp().record.setFieldShown('reason', status === '失注');  // 🟥
+    kApp(event).record.setFieldShown('reason', status === '失注');  // 🟥
  
     return event;
   });

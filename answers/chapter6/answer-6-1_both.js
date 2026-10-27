@@ -3,8 +3,8 @@
 (() => {
   'use strict';
 
-  // PC／モバイルで、APIの入り口を切り替える
-  const kApp = () => (kintone.isMobilePage() ? kintone.mobile.app : kintone.app);
+  // PC／モバイルで、APIの入り口を切り替える（イベント名が mobile. で始まるかで判定する）
+  const kApp = (event) => (event.type.startsWith('mobile.') ? kintone.mobile.app : kintone.app);
 
   kintone.events.on([
     'app.record.create.change.zip_code',
@@ -25,7 +25,7 @@
       if (status !== 200) throw new Error(`HTTP ${status}`);
 
       const response = JSON.parse(body);
-      const record = kApp().record.get();
+      const record = kApp(event).record.get();
 
       if (response.results) {
         const res = response.results[0];
@@ -36,7 +36,7 @@
         record.record['address'].value =
           '該当する住所が見つかりませんでした';
       }
-      kApp().record.set(record);
+      kApp(event).record.set(record);
     } catch (error) {
       // 🟥 開発者向けには console.error()、利用者向けには alert() で知らせる
       console.error('郵便番号検索に失敗しました', error);
