@@ -66,7 +66,7 @@
     return ranked.map(r => r.sentence).join("。") + "。";
   }
  
-  /* ===== AIを使用した要約の生成（kintone AI） ===== */
+  /* ===== AIを使用した要約の生成（kintone API経由の生成AI） ===== */
   async function summarizeAI(text) {
     // APIキーは不要。kintoneの生成AI用API（検討中のAPI）を呼び出す
     const { textStream } = await kintone.ai.generateText({

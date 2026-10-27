@@ -1,0 +1,43 @@
+name: 正誤・不具合の報告
+description: 書籍の誤りや、サンプルコードの不具合を報告します
+title: "[正誤] "
+labels: ["errata"]
+body:
+  - type: dropdown
+    id: kind
+    attributes:
+      label: 種類
+      options:
+        - 誤字・脱字・表記
+        - 説明の誤り
+        - サンプルコードの不具合（動かない）
+        - kintoneの仕様変更による相違
+        - その他
+    validations:
+      required: true
+  - type: input
+    id: where
+    attributes:
+      label: 該当箇所
+      description: 章・節・コード番号・ファイル名など（例：6.2節 コード6-2、answers/chapter6/answer-6-2.js）
+    validations:
+      required: true
+  - type: textarea
+    id: detail
+    attributes:
+      label: 内容
+      description: 何が、どうなっていますか。エラーメッセージがあれば、貼り付けてください。
+    validations:
+      required: true
+  - type: input
+    id: env
+    attributes:
+      label: 環境
+      description: ブラウザ（種類とバージョン）、PCかモバイルか、kintoneのアップデート時期など
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: ご確認
+      options:
+        - label: 個人情報や、業務上の機密情報（APIトークン、顧客名など）を含めていません
+          required: true

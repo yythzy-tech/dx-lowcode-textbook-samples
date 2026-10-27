@@ -45,15 +45,18 @@
 | 3-1 | 見積管理（`status`） | |
 | 4-1 | 見積管理（`status`、`quote_date`、`customer_name`、`reason`） | |
 | 4-2 | 見積管理（`total_amount`、`discount`、`status`、`quote_date`） | |
+| 4-3 | 見積管理（`status`）＋ 文字列（1行）`order_no`（受注番号）を追加 | 受注番号は、画面で編集不可になる |
 | 5-1、5-3 | 見積管理 ＋ 在庫管理 | コード中のアプリID `9999` を、ご自身の在庫管理アプリのIDに書き換える |
+| 5-5 | 見積管理（`status`、`order_no`） | 演習4-3のコードは、アップロードから外してから試す |
 | 6-1 | 現場メンテナンス（`zip_code`、`address`） | |
 | 6-2 | 現場メンテナンス（`check_date`、`next_check`）＋ ドロップダウン `check_type`（2週間点検／月次点検／3ヶ月点検） | |
 | 6-3 | 現場メンテナンス（`address`、`qr_space`） | SweetAlert2とqrcode.jsを先に追加（書籍6.6節） |
 | 6-4 | 現場メンテナンス（`check_date`、`next_check`） | |
 | 6-5 | 議事録管理（`minutes`、`summary_textrank`、`summary_ai`） | **検討中のAPIを使います（下記）** |
 | 6-6 | 現場メンテナンス（プロセス管理、`photo`）＋ 文字列（複数行）`action_note` | |
+| 6-7 | 見積管理（`status`、`order_no`）＋ 文字列（1行）`order_uuid`（外部連携キー）を追加 | `crypto.randomUUID()` を使います（HTTPSの環境で動きます）。演習4-3・5-5のコードは、外してから試す |
 
-### コード6-5について（kintone AIの生成AI用API）
+### コード6-5について（kintoneの生成AI用API）
 
 `kintone.ai.generateText()` は、開発を検討中のAPI（kintone APIラボ）です。使うには、次の2つの設定が必要です。
 
@@ -64,7 +67,7 @@ APIキーは不要です。実行すると、AIクレジットを消費します
 
 ## 動作確認の状況
 
-- 解答例（PC向け・モバイル向け・両対応の33ファイル）は、kintoneを模した環境で、分岐・計算結果・PCとモバイルの切り替えなどを、自動テストで確認しています。
+- 解答例（PC向け・モバイル向け・両対応の42ファイル）は、kintoneを模した環境で、分岐・計算結果・PCとモバイルの切り替えなどを、自動テストで確認しています。
 - 実際のkintone（特にスマートフォン）での動作確認は、順次行います。コード6-5は、2026年11月に動作確認を行う予定です。
 - 確認結果は、[ERRATA.md](ERRATA.md) と [CHANGELOG.md](CHANGELOG.md) に反映します。
 
