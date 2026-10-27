@@ -12,7 +12,7 @@
     let query = `order_no = "${orderNo}"`;
     if (ownId) query += ` and $id != ${ownId}`;
     const resp = await kintone.api(kintone.api.url('/k/v1/records', true), 'GET', {
-      app: kintone.app.getId(),
+      app: kintone.mobile.app.getId(),
       query: `${query} limit 1`,
       fields: ['$id']
     });
@@ -23,7 +23,7 @@
   async function nextOrderNo(date) {
     const head = `${PREFIX}${ymd(date)}-`;
     const resp = await kintone.api(kintone.api.url('/k/v1/records', true), 'GET', {
-      app: kintone.app.getId(),
+      app: kintone.mobile.app.getId(),
       query: `order_no like "${head}" order by order_no desc limit 1`,
       fields: ['order_no']
     });

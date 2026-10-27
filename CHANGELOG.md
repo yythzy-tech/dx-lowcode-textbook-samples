@@ -9,3 +9,4 @@
 ## v1.0.0 までの修正（発売前の動作確認）
 
 - 両対応（`_both.js`）の解答例 4-1・6-1・6-2・6-3・6-7：PC／モバイルの判定を、`kintone.isMobilePage()` から `event.type` に変更。`kintone.isMobilePage()` はPromiseを返すため、同期で使うと、PCの画面でもモバイルと判定されていた。
+- モバイル用（`_mobile.js`）と両対応（`_both.js`）の解答例 5-5：アプリのIDを、PC用の `kintone.app.getId()` で取得していた。モバイル向けの画面では `null` が返り、受注番号の確認・採番に失敗するため、モバイル用は `kintone.mobile.app.getId()`、両対応は画面に応じたIDを使うように修正。PC用（書籍の掲載どおり）は変更なし。
